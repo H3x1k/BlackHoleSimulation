@@ -1,8 +1,9 @@
 #version 330 core
+precision mediump float;
+
 out vec4 FragColor;
 
 uniform mat4 view;
-
 uniform samplerCube skybox;
 
 uniform vec3 cameraPos;
@@ -13,15 +14,15 @@ uniform float R;
 in vec2 coordPos;
 
 void main() {
-    vec3 dir = normalize(vec3(coordPos.x, coordPos.y, -1.0));
+    vec3 dir = normalize(vec3(coordPos.x * 1.6, coordPos.y, -1.0));
     dir = mat3(view) * dir;
     
     float r_min = 3.0;
     float r_max = 5.0;
-    float height = 0.1;
+    float height = 0.2;
 
     int MAX_ITER = 600;
-    float R_LIMIT = 100.0;
+    float R_LIMIT = 20.0;
     bool captured = false;
     bool disk = false;
 
@@ -47,11 +48,26 @@ void main() {
             break;
         }  
 
-        float dt = base_dt * clamp(rmag / R, 0.1, 10.0);
+        vec3 r_dir = r / rmag;
 
-        vec3 deflection = -1.5 * M * r / pow(rmag, 3.0);
+        float rmag2 = rmag * rmag;
+        float RR = R * R;
+        //float rmag3 = rmag * rmag * rmag;
+
+        //float r_dot = dot(-r_dir, dir);
+        //if (r_dot * R < -2.0) {
+        //    break;
+        //}
+
+        //float dt = clamp(rmag2 / RR * base_dt, base_dt, 1.0);
+        //float dt = max(rmag2 / RR - 1.0, 0.0) + base_dt;
+        float dt = base_dt;
+
+
+        vec3 deflection = -1.5 * M * r_dir / rmag2;
         dir += deflection * dt;
-        dir = normalize(dir);
+        //if (i % 5 == 0)
+         //   dir = normalize(dir);
 
         photonPos += dir * dt;
     }

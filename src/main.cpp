@@ -193,7 +193,16 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Blackhole Simulation", nullptr, nullptr);
+
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+
+    GLFWwindow* window = glfwCreateWindow(
+        mode->width, mode->height,
+        "Black Hole Simulation",
+        monitor, nullptr
+    );
     glfwMakeContextCurrent(window);
 
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -229,16 +238,16 @@ int main() {
 
     unsigned int shaderProgram = createShaderProgram(
         "C:/Users/hudso/Documents/GitHub/BlackHoleSimulation/src/vertex_shader.glsl", 
-        "C:/Users/hudso/Documents/GitHub/BlackHoleSimulation/src/fragment_shader.glsl"
+        "C:/Users/hudso/Documents/GitHub/BlackHoleSimulation/src/fragment_shader.glsl"//relativity_frag_shader.glsl
     );
 
-    std::vector<std::string> faces = {
-        "../Skybox/right.png",
-        "../Skybox/left.png",
-        "../Skybox/top.png",
-        "../Skybox/bottom.png",
-        "../Skybox/front.png",
-        "../Skybox/back.png"
+    std::vector<std::string> faces = { // _2.png is 4096x4096, _.png is 512x512
+        "../Skybox/right2.png",
+        "../Skybox/left2.png",
+        "../Skybox/top2.png",
+        "../Skybox/bottom2.png",
+        "../Skybox/front2.png",
+        "../Skybox/back2.png"
     };
     unsigned int cubemapTexture = loadCubemap(faces);
 
@@ -255,6 +264,8 @@ int main() {
         float currentFrame = glfwGetTime();
         float deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        std::cout << 1 / deltaTime << std::endl;
 
         processInput(window, deltaTime);
 
