@@ -13,13 +13,13 @@
 const unsigned int WIDTH = 800;
 const unsigned int HEIGHT = 800;
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 5.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 5.0f, 30.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 glm::vec3 cameraRight = glm::vec3(1.0f, 0.0f, 0.0f);
 
-float yaw = -90.0f;  // looking toward -Z
-float pitch = 0.0f;
+float yaw = 0.0f;
+float pitch = 20.0f;
 bool firstMouse = true;
 
 float sensitivity = 0.1f;
@@ -29,7 +29,7 @@ const float c = 1.0f;
 const float M = 1.0f;
 const float R = 2.0f * G * M / c / c;
 
-glm::vec3 blackholePos = glm::vec3(0.0f, 0.0f, -5.0f);
+glm::vec3 blackholePos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     static float lastX = 800.0f / 2.0;
@@ -197,8 +197,8 @@ int main() {
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
-    //GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Black Hole Simulation", monitor, nullptr);
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Black Hole Simulation", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Black Hole Simulation", monitor, nullptr);
+    //GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Black Hole Simulation", nullptr, nullptr);
     glfwMakeContextCurrent(window);
 
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);

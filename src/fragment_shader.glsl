@@ -62,7 +62,7 @@ void main() {
     float r_max = 10.0 * R;
     float height = 0.2;
 
-    int MAX_ITER = 300;
+    int MAX_ITER = 500;
     float R_LIMIT = 40.0;
     bool captured = false;
     bool disk = false;
@@ -132,10 +132,12 @@ void main() {
         photonPos += dir * dt;
     }
 
-    if (disk) {
-        //FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    if (disk && captured) {
+        //FragColor = vec4(1.0f);
+        FragColor = vec4(diskColor * diskAlpha + vec3(0.0, 0.0, 0.0) * (1.0 - diskAlpha), 1.0);
+    } else if (disk) {
         FragColor = vec4(diskColor * diskAlpha + texture(skybox, dir).rgb * (1.0 - diskAlpha), 1.0);
-    } else if (captured) {
+    }else if (captured) {
         FragColor = vec4(0.0f);
     } else {
         FragColor = texture(skybox, dir);
