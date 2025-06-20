@@ -233,8 +233,8 @@ int main() {
 
 
     unsigned int shaderProgram = createShaderProgram(
-        "C:/Users/hudso/Documents/GitHub/BlackHoleSimulation/src/vertex_shader.glsl", 
-        "C:/Users/hudso/Documents/GitHub/BlackHoleSimulation/src/fragment_shader.glsl"//relativity_frag_shader.glsl
+        "../Shaders/vertex_shader.glsl", 
+        "../Shaders/fragment_shader.glsl"//relativity_frag_shader.glsl
     );
 
     std::vector<std::string> faces = { // _2.png is 4096x4096, _.png is 512x512
