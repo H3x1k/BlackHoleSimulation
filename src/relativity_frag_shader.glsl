@@ -13,7 +13,8 @@ in vec2 coordPos;
 
 void main() {
     // Initial direction (camera ray)
-    vec3 dir = normalize(vec3(coordPos.x * 1.6, coordPos.y, -1.0));
+    float aspectRatio = 1.0;
+    vec3 dir = normalize(vec3(coordPos.x * aspectRatio, coordPos.y, -1.0));
     dir = mat3(view) * dir;
 
     // Compute impact parameter b = r0 * sin(theta)

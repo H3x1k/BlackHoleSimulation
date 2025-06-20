@@ -72,7 +72,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     cameraRight = rightdir;
 }
 void processInput(GLFWwindow* window, float deltaTime) {
-    const float cameraSpeed = 2.5f * deltaTime; // time-adjusted movement speed
+    const float cameraSpeed = 4.0f * deltaTime; // time-adjusted movement speed
 
     glm::vec3 movementVector = glm::vec3(0.0f, 0.0f, 0.0f);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -90,7 +90,7 @@ void processInput(GLFWwindow* window, float deltaTime) {
 
     float mag = glm::length(movementVector);
     if (mag > 0)
-        cameraPos += movementVector / mag * cameraSpeed;
+        cameraPos += movementVector / mag * cameraSpeed * (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 2.0f : 1.0f);
 }
 
 std::string loadShaderSource(const char* path) {
@@ -197,12 +197,8 @@ int main() {
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
-
-    GLFWwindow* window = glfwCreateWindow(
-        mode->width, mode->height,
-        "Black Hole Simulation",
-        monitor, nullptr
-    );
+    //GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Black Hole Simulation", monitor, nullptr);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Black Hole Simulation", nullptr, nullptr);
     glfwMakeContextCurrent(window);
 
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -285,9 +281,13 @@ int main() {
 
         unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
         unsigned int camPosLoc = glGetUniformLocation(shaderProgram, "cameraPos");
-
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniform3fv(camPosLoc, 1, glm::value_ptr(cameraPos));
+
+        int width, height;
+        glfwGetFramebufferSize(window, &width, &height);
+        GLint resLoc = glGetUniformLocation(shaderProgram, "resolution");
+        glUniform2f(resLoc, (float)width, (float)height);
 
         unsigned int bhPosLoc = glGetUniformLocation(shaderProgram, "bhPos");
         unsigned int MLoc = glGetUniformLocation(shaderProgram, "M");
