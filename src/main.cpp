@@ -252,6 +252,7 @@ int main() {
 
 
     float lastFrame = 0.0f;
+    float startTime = glfwGetTime();
 
     while (!glfwWindowShouldClose(window)) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -260,6 +261,8 @@ int main() {
         float currentFrame = glfwGetTime();
         float deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        float time = glfwGetTime() - startTime;
 
         std::cout << 1 / deltaTime << std::endl;
 
@@ -292,10 +295,12 @@ int main() {
         unsigned int bhPosLoc = glGetUniformLocation(shaderProgram, "bhPos");
         unsigned int MLoc = glGetUniformLocation(shaderProgram, "M");
         unsigned int RLoc = glGetUniformLocation(shaderProgram, "R");
+        unsigned int timeLoc = glGetUniformLocation(shaderProgram, "time");
 
         glUniform3fv(bhPosLoc, 1, glm::value_ptr(blackholePos));
         glUniform1f(MLoc, M);
         glUniform1f(RLoc, R);
+        glUniform1f(timeLoc, time);
         
         glBindVertexArray(quadVAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);

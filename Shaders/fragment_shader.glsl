@@ -60,18 +60,18 @@ void main() {
     vec3 dir = normalize(vec3(coordPos.x * aspectRatio, coordPos.y, -0.8));
     dir = mat3(view) * dir;
     
-    float r_min = 3.0 * R;
+    float r_min = 1.5 * R;
     float r_max = 10.0 * R;
     float height = 0.2;
 
-    int MAX_ITER = 100;
+    int MAX_ITER = 500;
     float R_LIMIT = 35.0;
     bool captured = false;
     bool disk = false;
     vec3 diskColor = vec3(0.0);
     float diskAlpha = 0.0;
 
-    float base_dt = 1.0;
+    float base_dt = 0.2;
     
     vec3 photonPos = cameraPos;
 
@@ -87,7 +87,7 @@ void main() {
             break;
         }
 
-        /*if (rmag > r_min && rmag < r_max && abs(r.y) < 0.5 * height)
+        if (rmag > r_min && rmag < r_max && abs(r.y) < 0.5 * height)
         {
             float diskmag = length(r.xz);
             float theta = atan(r.z, r.x) + 5.0 * time / diskmag;
@@ -105,7 +105,7 @@ void main() {
                 //FragColor = vec4(diskColor, 1.0);
                 disk = true;
             }
-        }*/
+        }
 
         vec3 r_dir = r / rmag;
 
@@ -126,7 +126,7 @@ void main() {
         //float dt = base_dt;
 
 
-        vec3 deflection = -1.0 * M * r_dir / rmag2;
+        vec3 deflection = -3.0 * M * r_dir / rmag2;
         dir += deflection * dt;
         //if (i % 5 == 0)
         //    dir = normalize(dir);
