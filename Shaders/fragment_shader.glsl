@@ -1,5 +1,5 @@
 #version 330 core
-precision mediump float;
+precision lowp float;
 
 out vec4 FragColor;
 
@@ -62,7 +62,7 @@ void main() {
     
     float r_min = 1.5 * R;
     float r_max = 10.0 * R;
-    float height = 0.2;
+    float height = 0.5;
 
     int MAX_ITER = 500;
     float R_LIMIT = 35.0;
@@ -71,7 +71,7 @@ void main() {
     vec3 diskColor = vec3(0.0);
     float diskAlpha = 0.0;
 
-    float base_dt = 0.2;
+    float base_dt = 0.1;
     
     vec3 photonPos = cameraPos;
 
