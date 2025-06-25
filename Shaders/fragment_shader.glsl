@@ -1,5 +1,5 @@
 #version 330 core
-precision lowp float;
+precision highp float;
 
 out vec4 FragColor;
 
@@ -62,16 +62,16 @@ void main() {
     
     float r_min = 1.5 * R;
     float r_max = 10.0 * R;
-    float height = 0.5;
+    float height = 0.3;
 
-    int MAX_ITER = 500;
-    float R_LIMIT = 35.0;
+    int MAX_ITER = 1000;
+    float R_LIMIT = 20.0 * R;
     bool captured = false;
     bool disk = false;
     vec3 diskColor = vec3(0.0);
     float diskAlpha = 0.0;
 
-    float base_dt = 0.1;
+    float base_dt = 0.3;
     
     vec3 photonPos = cameraPos;
 
@@ -87,11 +87,11 @@ void main() {
             break;
         }
 
-        if (rmag > r_min && rmag < r_max && abs(r.y) < 0.5 * height)
+        /*if (rmag > r_min && rmag < r_max && abs(r.y) < 0.5 * height)
         {
             float diskmag = length(r.xz);
             float theta = atan(r.z, r.x) + 5.0 * time / diskmag;
-            vec2 noiseCoord = vec2(diskmag * 2.0, theta * 5.0);
+            vec2 noiseCoord = vec2(diskmag * 0.5, theta * 5.0);
             float noiseValue = perlinNoise(noiseCoord);
 
             float t = (rmag - r_min) / (r_max - r_min);
@@ -105,10 +105,12 @@ void main() {
                 //FragColor = vec4(diskColor, 1.0);
                 disk = true;
             }
+        }*/
+        if (rmag > r_min && rmag < r_max && abs(r.y) < 0.5 * height) {
+            disk = true;
         }
 
         vec3 r_dir = r / rmag;
-
         float rmag2 = rmag * rmag;
         //float RR = 10.0 * R * R;
         float RR = r_max * r_max;
@@ -136,11 +138,11 @@ void main() {
 
 
     if (disk && captured) {
-        //FragColor = vec4(1.0f);
-        FragColor = vec4(diskColor * diskAlpha + vec3(0.0, 0.0, 0.0) * (1.0 - diskAlpha), 1.0);
+        FragColor = vec4(1.0f);
+        //FragColor = vec4(diskColor * diskAlpha + vec3(0.0, 0.0, 0.0) * (1.0 - diskAlpha), 1.0);
     } else if (disk) {
-        FragColor = vec4(diskColor * diskAlpha + texture(skybox, dir).rgb * (1.0 - diskAlpha), 1.0);
-        //FragColor = vec4(1.0);
+        //FragColor = vec4(diskColor * diskAlpha + texture(skybox, dir).rgb * (1.0 - diskAlpha), 1.0);
+        FragColor = vec4(1.0);
     }else if (captured) {
         FragColor = vec4(0.0f);
     } else {

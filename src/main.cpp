@@ -13,7 +13,12 @@
 const unsigned int WIDTH = 800;
 const unsigned int HEIGHT = 800;
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 5.0f, 30.0f);
+const float G = 1.0f; //6.7e-11f
+const float c = 1.0f; //3.0e8f
+const float M = 1.0f; //1.9e31f
+const float R = 2.0f * G * M / c / c;
+
+glm::vec3 cameraPos = glm::vec3(0.0f, 5.0f, 18.0f * R);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 glm::vec3 cameraRight = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -23,11 +28,6 @@ float pitch = 20.0f;
 bool firstMouse = true;
 
 float sensitivity = 0.1f;
-
-const float G = 1.0f;
-const float c = 1.0f;
-const float M = 1.0f;
-const float R = 2.0f * G * M / c / c;
 
 glm::vec3 blackholePos = glm::vec3(0.0f, 0.0f, 0.0f);
 
