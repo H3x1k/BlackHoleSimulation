@@ -65,13 +65,13 @@ void main() {
     float height = 0.3;
 
     int MAX_ITER = 1000;
-    float R_LIMIT = 20.0 * R;
+    float R_LIMIT = 50.0 * R;
     bool captured = false;
     bool disk = false;
     vec3 diskColor = vec3(0.0);
     float diskAlpha = 0.0;
 
-    float base_dt = 0.3;
+    float base_dt = 0.5;
     
     vec3 photonPos = cameraPos;
 
@@ -87,7 +87,7 @@ void main() {
             break;
         }
 
-        /*if (rmag > r_min && rmag < r_max && abs(r.y) < 0.5 * height)
+        if (rmag > r_min && rmag < r_max && abs(r.y) < 0.5 * height)
         {
             float diskmag = length(r.xz);
             float theta = atan(r.z, r.x) + 5.0 * time / diskmag;
@@ -95,17 +95,17 @@ void main() {
             float noiseValue = perlinNoise(noiseCoord);
 
             float t = (rmag - r_min) / (r_max - r_min);
-            //float alpha = (1.0 - t) * noiseValue;
+            float alpha = (1.0 - t) * (noiseValue + 0.5);
             //float alpha = ((1.0 - t) + noiseValue) * 0.5;
             //float alpha = min((1.0 - t) + noiseValue, 1.0) * noiseValue;
-            float alpha = (1.0 - t) * ((1.0 - t) + noiseValue) * 0.5;
+            //float alpha = (1.0 - t) * ((1.0 - t) + noiseValue) * 0.5;
             if (alpha > diskAlpha) {
                 diskColor = mix(vec3(1.0, 1.0, 0.0), vec3(1.0, 0.2, 0.0), t);
                 diskAlpha = alpha;
                 //FragColor = vec4(diskColor, 1.0);
                 disk = true;
             }
-        }*/
+        }
         if (rmag > r_min && rmag < r_max && abs(r.y) < 0.5 * height) {
             disk = true;
         }
@@ -121,7 +121,8 @@ void main() {
         //    break;
         //}
 
-        float dt = clamp(rmag2 / RR * base_dt, base_dt, 1.0);
+        //float dt = clamp(rmag2 / RR * base_dt, base_dt, 1.0);
+        float dt = max(rmag2 / RR * base_dt, base_dt);
         //float dt = max(rmag2 / RR - 1.0, 0.0) + base_dt;
         //float dt = min(max(rmag2 / RR - 1.0, 0.0) + base_dt, 2.0);
         //float dt = max(rmag / R / 10.0 - 1.0, 0.0) + base_dt;
@@ -132,17 +133,18 @@ void main() {
         dir += deflection * dt;
         //if (i % 5 == 0)
         //    dir = normalize(dir);
+        dir = normalize(dir);
 
         photonPos += dir * dt;
     }
 
 
     if (disk && captured) {
-        FragColor = vec4(1.0f);
-        //FragColor = vec4(diskColor * diskAlpha + vec3(0.0, 0.0, 0.0) * (1.0 - diskAlpha), 1.0);
+        //FragColor = vec4(1.0f);
+        FragColor = vec4(diskColor * diskAlpha + vec3(0.0, 0.0, 0.0) * (1.0 - diskAlpha), 1.0);
     } else if (disk) {
-        //FragColor = vec4(diskColor * diskAlpha + texture(skybox, dir).rgb * (1.0 - diskAlpha), 1.0);
-        FragColor = vec4(1.0);
+        FragColor = vec4(diskColor * diskAlpha + texture(skybox, dir).rgb * (1.0 - diskAlpha), 1.0);
+        //FragColor = vec4(1.0);
     }else if (captured) {
         FragColor = vec4(0.0f);
     } else {

@@ -238,12 +238,12 @@ int main() {
     );
 
     std::vector<std::string> faces = { // _2.png is 4096x4096, _.png is 512x512
-        "../Skybox/right2.png",
-        "../Skybox/left2.png",
-        "../Skybox/top2.png",
-        "../Skybox/bottom2.png",
-        "../Skybox/front2.png",
-        "../Skybox/back2.png"
+        "../Skybox/right.png",
+        "../Skybox/left.png",
+        "../Skybox/top.png",
+        "../Skybox/bottom.png",
+        "../Skybox/front.png",
+        "../Skybox/back.png"
     };
     unsigned int cubemapTexture = loadCubemap(faces);
 
